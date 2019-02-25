@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cys.ssm.dao.IRoleUrlControlDao">
+	<resultMap id="BaseResultMap" type="com.cys.ssm.model.RoleUrlControl">
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="url_controls" property="urlControls" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		role_id, url_controls
+	</sql>
+
+	<!-- 查询 -->
+	<select id="queryById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from role_url_control
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+
+	<!-- 批量查询 -->
+	<select id="queryList" resultMap="BaseResultMap"
+		parameterType="com.cys.ssm.model.RoleUrlControl">
+		select
+		<include refid="Base_Column_List" />
+		from role_url_control
+		where 1=1 
+		<if test="roleIds != null and roleIds.size() > 0">
+			and role_id in
+			<foreach collection="roleIds" item="obj" open="(" separator="," close=")">
+                #{obj}
+       		</foreach>  
+		</if>
+	</select>
+
+	<!-- 插入 -->
+	<insert id="insert" parameterType="com.cys.ssm.model.RoleUrlControl">
+		insert into role_url_control
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="urlControls != null">
+				url_controls,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="urlControls != null">
+				#{urlControls,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 批量插入 -->
+	<insert id="insertByBatch" parameterType="java.util.List">
+		insert into role_url_control
+		(role_id, url_controls)
+		select A.* from
+		(
+		<foreach collection="list" item="obj" index="index"
+			separator="union">
+			select
+			#{obj.roleId,jdbcType=INTEGER},
+			#{obj.urlControls,jdbcType=INTEGER}
+			from dual
+		</foreach>
+		) A
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="deleteById"
+		parameterType="java.lang.Integer">
+		delete from role_url_control
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteByBatch" parameterType="com.cys.ssm.model.RoleUrlControl">
+		delete from role_url_control
+		where 1=1 
+		<if test="roleIds != null and roleIds.size() > 0">
+			and role_id in
+			<foreach collection="roleIds" item="obj" open="(" separator="," close=")">
+                #{obj}
+       		</foreach>  
+		</if>
+	</delete>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.cys.ssm.model.RoleUrlControl">
+		update role_url_control
+		<set>
+			<if test="urlControls != null">
+				url_controls = #{urlControls,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</update>
+
+</mapper>    

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cys.ssm.dao.IUserLogDao">
+	<resultMap id="BaseResultMap" type="com.cys.ssm.model.UserLog">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="params" property="params" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_name, ip, url, params, create_time
+	</sql>
+
+	<!-- 查询 -->
+	<select id="queryById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from user_log
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 批量查询 -->
+	<select id="queryList" resultMap="BaseResultMap"
+		parameterType="com.cys.ssm.model.UserLog">
+		select
+		<include refid="Base_Column_List" />
+		from user_log
+		<where>
+			<if test="userName != null and userName != '' ">
+				and user_name = #{userName,jdbcType=VARCHAR} 
+			</if>
+			<if test="url != null and url != '' ">
+				and url = #{url,jdbcType=VARCHAR} 
+			</if>
+		</where>
+	</select>
+
+	<!-- 插入 -->
+	<insert id="insert" parameterType="com.cys.ssm.model.UserLog">
+		insert into user_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="ip != null">
+				ip, 
+			</if>
+			<if test="url != null">
+				url, 
+			</if>
+			<if test="params != null">
+				params, 
+			</if>
+			<if test="createTime != null">
+				create_time, 
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="params != null">
+				#{params,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 批量插入 -->
+	<insert id="insertByBatch" parameterType="java.util.List">
+		insert into user_log
+		(id, user_name, ip, url, params, create_time)
+		select A.* from
+		(
+		<foreach collection="list" item="obj" index="index"
+			separator="union">
+			select
+			#{obj.id,jdbcType=INTEGER},
+			#{obj.userName,jdbcType=VARCHAR},
+			#{obj.ip,jdbcType=VARCHAR},
+			#{obj.url,jdbcType=VARCHAR},
+			#{obj.params,jdbcType=VARCHAR},
+			#{obj.createTime,jdbcType=TIMESTAMP}
+			from dual
+		</foreach>
+		) A
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="deleteById"
+		parameterType="java.lang.Integer">
+		delete from user_log
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteByBatch" parameterType="com.cys.ssm.model.UserLog">
+		delete from user_log
+		where 1=1 
+		<if test="userName != null">
+			and name = #{name,jdbcType=VARCHAR} 
+		</if>
+	</delete>
+
+</mapper>    

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cys.ssm.dao.IUrlControlDao">
+	<resultMap id="BaseResultMap" type="com.cys.ssm.model.UrlControl">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="menu" property="menu" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="order_by" property="orderBy" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, menu, name, url, status, order_by
+	</sql>
+
+	<!-- 查询用-->
+	<select id="queryById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from url_control
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 批量查询 -->
+	<select id="queryList" resultMap="BaseResultMap"
+		parameterType="com.cys.ssm.model.UrlControl">
+		select
+		<include refid="Base_Column_List" />
+		from url_control
+		where 1=1 
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER} 
+		</if>
+		<if test="menu !=null">
+			and menu = #{menu,jdbcType=VARCHAR} 
+		</if>
+		<if test="name != null">
+			and name = #{name,jdbcType=VARCHAR} 
+		</if>
+		<if test="url != null">
+			and url = #{url,jdbcType=VARCHAR} 
+		</if>
+		<if test="status != null">
+			and status = #{status,jdbcType=INTEGER} 
+		</if>
+		<if test="orderBy != null">
+			and order_by = #{orderBy,jdbcType=INTEGER} 
+		</if>
+		<if test="ids != null and ids.size() > 0">
+			and id in
+			<foreach collection="ids" item="obj" open="(" separator="," close=")">
+                #{obj}
+       		</foreach>  
+		</if>
+	</select>
+
+	<!-- 插入 -->
+	<insert id="insert" parameterType="com.cys.ssm.model.UrlControl">
+		insert into url_control
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="menu !=null">
+				menu,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="url != null">
+				url, 
+			</if>
+			<if test="status != null">
+				status, 
+			</if>
+			<if test="orderBy != null">
+				order_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="menu !=null">
+				#{menu,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="orderBy != null">
+				#{orderBy,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 批量插入 -->
+	<insert id="insertByBatch" parameterType="java.util.List">
+		insert into url_control
+		(id, menu, name, url, status, order_by)
+		select A.* from
+		(
+		<foreach collection="list" item="obj" index="index"
+			separator="union">
+			select
+			#{obj.id,jdbcType=INTEGER},
+			#{obj.menu,jdbcType=VARCHAR},
+			#{obj.name,jdbcType=VARCHAR},
+			#{obj.url,jdbcType=VARCHAR},
+			#{obj.status,jdbcType=INTEGER},
+			#{obj.orderBy,jdbcType=INTEGER}
+			from dual
+		</foreach>
+		) A
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="deleteById"
+		parameterType="java.lang.Integer">
+		delete from url_control
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteByBatch" parameterType="com.cys.ssm.model.UrlControl">
+		delete from url_control
+		where 1=1 
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER} 
+		</if>
+		<if test="menu !=null">
+			and menu = #{menu,jdbcType=VARCHAR} 
+		</if>
+		<if test="name != null">
+			and name = #{name,jdbcType=VARCHAR} 
+		</if>
+		<if test="url != null">
+			and url = #{url,jdbcType=VARCHAR} 
+		</if>
+		<if test="status != null">
+			and status = #{status,jdbcType=INTEGER} 
+		</if>
+		<if test="orderBy != null">
+			and order_by = #{orderBy,jdbcType=INTEGER} 
+		</if>
+	</delete>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.cys.ssm.model.UrlControl">
+		update url_control
+		<set>
+			<if test="menu !=null">
+				menu = #{menu,jdbcType=VARCHAR}, 
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="orderBy != null">
+				order_by = #{orderBy,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>    
