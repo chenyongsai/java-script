@@ -18,6 +18,8 @@
 #   Copyright (c) 2001-2006 The Apache Software Foundation.  All rights
 #   reserved.
 
+#导入定时任务需要的环境变量配置
+source /etc/profile
 
 # resolve links - $0 may be a softlink
 PRG="$0"

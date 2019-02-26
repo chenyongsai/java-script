@@ -18,6 +18,8 @@
 #   Copyright (c) 2001-2006 The Apache Software Foundation.  All rights
 #   reserved.
 
+#导入定时任务需要的环境变量配置
+source /etc/profile
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -111,5 +113,5 @@ exec "$JAVACMD" $JAVA_OPTS \
   -Dapp.repo="$REPO" \
   -Dapp.home="$BASEDIR" \
   -Dbasedir="$BASEDIR" \
-  com.cys.ssm.sh.JavaScriptTest2\
+  com.cys.ssm.sh.JavaScriptTest2 \
   "$@"
