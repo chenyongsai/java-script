@@ -1,4 +1,4 @@
-package com.test;
+package com.cys.ssm.sh;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.context.support.*;
 
 import com.cys.ssm.dao.IUserDao;
 
-public class App {
+public class JavaScriptTest {
 
 	@Resource    
 	private static IUserDao userDao; 
@@ -23,7 +23,7 @@ public class App {
 		User user = new User();
 		List<User> uList = userDao.queryList(user);
 		for(User obj : uList) {
-			System.out.println("app="+obj.getName());
+			System.out.println("JavaScriptTest="+obj.getName());
 		}
 	}
 }

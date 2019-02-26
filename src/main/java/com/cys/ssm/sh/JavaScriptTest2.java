@@ -9,7 +9,7 @@ import org.springframework.context.support.*;
 
 import com.cys.ssm.dao.IUserDao;
 
-public class App2 {
+public class JavaScriptTest2 {
 
 	@Resource    
 	private static IUserDao userDao; 
@@ -23,7 +23,7 @@ public class App2 {
 		User user = new User();
 		List<User> uList = userDao.queryList(user);
 		for(User obj : uList) {
-			System.out.println("app2="+obj.getName());
+			System.out.println("JavaScriptTest2="+obj.getName());
 		}
 	}
 }

@@ -111,5 +111,5 @@ exec "$JAVACMD" $JAVA_OPTS \
   -Dapp.repo="$REPO" \
   -Dapp.home="$BASEDIR" \
   -Dbasedir="$BASEDIR" \
-  com.cys.ssm.sh.App2 \
+  com.cys.ssm.sh.JavaScriptTest2\
   "$@"
